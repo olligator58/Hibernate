@@ -1,8 +1,6 @@
 package services;
 
-import dao.AutoDao;
 import dao.UserDao;
-import models.Auto;
 import models.User;
 
 import java.util.List;
@@ -10,7 +8,6 @@ import java.util.List;
 public class UserService {
 
     private UserDao usersDao = new UserDao();
-    private AutoDao autoDao = new AutoDao();
 
     public UserService() {
     }
@@ -35,17 +32,15 @@ public class UserService {
         return usersDao.findAll();
     }
 
-
     public void deleteAll() {
         for (User user : findAllUsers()) {
-            for (Auto auto : user.getAutos()) {
-                autoDao.delete(auto);
-            }
             deleteUser(user);
         }
-
-
     }
 
-
+    public void deleteAllUsersAndAutos() {
+        AutoService autoService = new AutoService();
+        autoService.deleteAll();
+        deleteAll();
+    }
 }
